@@ -1,18 +1,27 @@
 import Link from 'next/link'
 function EventItem(props) {
+  const { id, title, image, date, location } = props
+  //日期处理
+  const humanReadableDate = new Date(date).toLocaleDateString('zh-CN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+  //动态路由
+  const exploreLink = `/events/${id}`
   return (
     <li>
-      <img src='' alt='' />
+      <img src={'/' + image} alt={title} />
       <div>
-        <h2>活动标题</h2>
+        <h2>{title}</h2>
         <div>
-          <time>活动日期</time>
+          <time>{humanReadableDate}</time>
         </div>
         <div>
-          <address>活动地点</address>
+          <address>{location}</address>
         </div>
         <div>
-          <Link href='/'>查看活动详情</Link>
+          <Link href={exploreLink}>查看活动详情</Link>
         </div>
       </div>
     </li>
