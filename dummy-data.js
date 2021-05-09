@@ -17,7 +17,7 @@ const DUMMY_EVENTS = [
     location: '成都市金牛区槐树街',
     date: '2021-06-10',
     image: 'images/band-ensemble.jpg',
-    isFeatured: true,
+    isFeatured: false,
   },
   {
     id: 'e3',
