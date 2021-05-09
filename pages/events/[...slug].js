@@ -1,5 +1,10 @@
+import { Fragment } from 'react'
 import { useRouter } from 'next/router'
 import { getFilteredEvents } from '../../dummy-data'
+import EventList from '../../components/events/event-list'
+import ResultsTitle from '../../components/events/results-title'
+import Button from '../../components/ui/button'
+import ErrorAlert from '../../components/ui/error-alert'
 function FilteredEventPage() {
   const router = useRouter()
 
@@ -26,7 +31,17 @@ function FilteredEventPage() {
     numMonth > 12 ||
     numMonth < 1
   ) {
-    return <p>无效查询，请重新选择过滤时间！</p>
+    return (
+      <Fragment>
+        <ErrorAlert>
+          <p>无效查询，请重新选择过滤时间！</p>
+        </ErrorAlert>
+
+        <div className='center'>
+          <Button link='/events'>查看所有活动</Button>
+        </div>
+      </Fragment>
+    )
   }
 
   const filteredEvents = getFilteredEvents({
@@ -35,11 +50,25 @@ function FilteredEventPage() {
   })
 
   if (!filteredEvents || filteredEvents.length === 0) {
-    return <p>抱歉，查找不到该日期的活动内容！</p>
+    return (
+      <Fragment>
+        <ErrorAlert>
+          <p>抱歉，查找不到该日期的活动内容！</p>
+        </ErrorAlert>
+
+        <div className='center'>
+          <Button link='/events'>查看所有活动</Button>
+        </div>
+      </Fragment>
+    )
   }
+
+  //日期格式化
+  const date = new Date(numYear, numMonth - 1)
   return (
     <div>
-      <h1>过滤后的活动页面</h1>
+      <ResultsTitle date={date} />
+      <EventList items={filteredEvents} />
     </div>
   )
 }
