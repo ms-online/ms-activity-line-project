@@ -1,8 +1,16 @@
+import Head from 'next/head'
 import { getFeaturedEvents } from '../helpers/api-util'
 import EventList from '../components/events/event-list'
 function HomePage(props) {
   return (
     <div>
+      <Head>
+        <title>活动行</title>
+        <meta
+          name='description'
+          content='找好活动，办好活动，上活动行！'
+        ></meta>
+      </Head>
       <EventList items={props.events} />
     </div>
   )
