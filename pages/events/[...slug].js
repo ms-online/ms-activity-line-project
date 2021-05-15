@@ -30,16 +30,37 @@ function FilteredEventPage(props) {
     }
   }, [data])
 
-  if (!loadedEvents) {
-    return <p className='center'>页面加载中...</p>
-  }
+  let pageHeadData = (
+    <Head>
+      <title>筛选活动</title>
+      <meta name='description' content='过滤活动列表'></meta>
+    </Head>
+  )
 
+  if (!loadedEvents) {
+    return (
+      <Fragment>
+        {pageHeadData}
+        <p className='center'>页面加载中...</p>
+      </Fragment>
+    )
+  }
   //处理捕获的路由参数
   const filteredYear = filterData[0]
   const filteredMonth = filterData[1]
 
   const numYear = +filteredYear
   const numMonth = +filteredMonth
+
+  pageHeadData = (
+    <Head>
+      <title>筛选活动</title>
+      <meta
+        name='description'
+        content={`活动时间为${numYear}-${numMonth}`}
+      ></meta>
+    </Head>
+  )
 
   //判断是否为有效年份
   if (
@@ -53,6 +74,7 @@ function FilteredEventPage(props) {
   ) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>无效查询，请重新选择过滤时间！</p>
         </ErrorAlert>
@@ -75,6 +97,7 @@ function FilteredEventPage(props) {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>抱歉，查找不到该日期的活动内容！</p>
         </ErrorAlert>
@@ -90,13 +113,7 @@ function FilteredEventPage(props) {
   const date = new Date(numYear, numMonth - 1)
   return (
     <div>
-      <Head>
-        <title>筛选活动</title>
-        <meta
-          name='description'
-          content={`活动时间为${numYear}-${numMonth}`}
-        ></meta>
-      </Head>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </div>
