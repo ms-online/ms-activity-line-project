@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import { getFilteredEvents } from '../../helpers/api-util'
 import EventList from '../../components/events/event-list'
 import ResultsTitle from '../../components/events/results-title'
@@ -89,6 +90,13 @@ function FilteredEventPage(props) {
   const date = new Date(numYear, numMonth - 1)
   return (
     <div>
+      <Head>
+        <title>筛选活动</title>
+        <meta
+          name='description'
+          content={`活动时间为${numYear}-${numMonth}`}
+        ></meta>
+      </Head>
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </div>
