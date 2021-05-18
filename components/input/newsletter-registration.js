@@ -1,12 +1,18 @@
+import { useRef } from 'react'
 import classes from './newsletter-registration.module.css'
 
 function NewsletterRegistration() {
+  const emailInputRef = useRef()
   function registrationHandler(event) {
     event.preventDefault()
-
-    // 获取用户输入内容（useState 或 useRef）
-    // 可选: 输入验证
-    // 发送有效数据到API
+    const enteredEmail = emailInputRef.current.value
+    fetch('/api/newsLetter', {
+      method: 'POST',
+      body: JSON.stringify({ email: enteredEmail }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
   }
 
   return (
@@ -14,7 +20,13 @@ function NewsletterRegistration() {
       <h2>注册用户</h2>
       <form onSubmit={registrationHandler}>
         <div className={classes.control}>
-          <input type='email' id='email' placeholder='邮箱' aria-label='邮箱' />
+          <input
+            type='email'
+            id='email'
+            placeholder='邮箱'
+            aria-label='邮箱'
+            ref={emailInputRef}
+          />
           <button>注册</button>
         </div>
       </form>
