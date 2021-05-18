@@ -14,7 +14,7 @@ function Comments(props) {
   }
 
   function addCommentHandler(commentData) {
-    // send data to API
+    // 发送数据到API路由
   }
 
   return (
