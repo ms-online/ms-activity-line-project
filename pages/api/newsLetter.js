@@ -1,4 +1,5 @@
-function handler(req, res) {
+import { MongoClient } from 'mongodb'
+async function handler(req, res) {
   if (req.method === 'POST') {
     const userEmail = req.body.email
 
@@ -7,7 +8,14 @@ function handler(req, res) {
       return
     }
 
-    console.log(userEmail)
+    //将邮箱地址保存到数据库
+    const client = await MongoClient.connect(
+      'mongodb+srv://nextjs:nextjs123@msonline.menjs.mongodb.net/newsletter?retryWrites=true&w=majority',
+      { useUnifiedTopology: true }
+    )
+    const db = client.db()
+    await db.collection('emails').insertOne({ email: userEmail })
+    client.close()
     res.status(201).json({ message: '注册成功！' })
   }
 }
