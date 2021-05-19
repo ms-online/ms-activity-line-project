@@ -1,21 +1,17 @@
 import classes from './comment-list.module.css'
 
-function CommentList() {
+function CommentList(props) {
+  const { items } = props
   return (
     <ul className={classes.comments}>
-      {/* 请求API路由-渲染评论列表 */}
-      <li>
-        <p>活动很有趣！</p>
-        <div>
-          ——<address>Lucy</address>
-        </div>
-      </li>
-      <li>
-        <p>认识很多新朋友，很棒！</p>
-        <div>
-          —— <address>Summer</address>
-        </div>
-      </li>
+      {items.map((item) => (
+        <li key={item.id}>
+          <p>{item.text}</p>
+          <div>
+            ——<address>{item.name}</address>
+          </div>
+        </li>
+      ))}
     </ul>
   )
 }
