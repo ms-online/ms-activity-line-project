@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+import { connectDatabase, insertDocument } from '../../helpers/db-util'
 async function handler(req, res) {
   if (req.method === 'POST') {
     const userEmail = req.body.email
@@ -9,13 +9,22 @@ async function handler(req, res) {
     }
 
     //将邮箱地址保存到数据库
-    const client = await MongoClient.connect(
-      'mongodb+srv://nextjs:nextjs123@msonline.menjs.mongodb.net/events?retryWrites=true&w=majority',
-      { useUnifiedTopology: true }
-    )
-    const db = client.db()
-    await db.collection('newsletter').insertOne({ email: userEmail })
-    client.close()
+    let client
+    try {
+      client = await connectDatabase()
+    } catch (error) {
+      res.status(500).json({ message: '数据库链接失败' })
+      return
+    }
+
+    try {
+      await insertDocument(client, 'newsletter', { email: userEmail })
+      client.close()
+    } catch (error) {
+      res.status(500).json({ message: '邮箱添加失败' })
+      return
+    }
+
     res.status(201).json({ message: '注册成功！' })
   }
 }
